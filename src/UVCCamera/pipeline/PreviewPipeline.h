@@ -14,7 +14,7 @@ class PreviewPipeline : virtual public CaptureBasePipeline {
 private:
 	ANativeWindow *mCaptureWindow;
 protected:
-	virtual void do_capture(JNIEnv *env);
+	virtual void do_capture();
 public:
 	PreviewPipeline(const size_t &_data_bytes = DEFAULT_FRAME_SZ);
 	virtual ~PreviewPipeline();

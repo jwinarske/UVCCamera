@@ -22,13 +22,8 @@
  * Files in the jni/libjpeg, jni/libusb, jin/libuvc, jni/rapidjson folder may have a different license, see the respective files.
 */
 
-#ifndef UTILBASE_H_
-#define UTILBASE_H_
+#pragma once
 
-#include <jni.h>
-#ifdef __ANDROID__
-#include <android/log.h>
-#endif
 #include <unistd.h>
 #include <libgen.h>
 #include "localdefines.h"
@@ -222,9 +217,3 @@
 		LOG_ALWAYS_FATAL(                                       \
 			__FILE__ ":" LITERAL_TO_STRING(__LINE__)            \
 			" Should not be here.");
-
-void setVM(JavaVM *);
-JavaVM *getVM();
-JNIEnv *getEnv();
-
-#endif /* UTILBASE_H_ */

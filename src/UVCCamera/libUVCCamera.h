@@ -22,12 +22,42 @@
  * Files in the jni/libjpeg, jni/libusb, jin/libuvc, jni/rapidjson folder may have a different license, see the respective files.
 */
 
-#ifndef LIBUVCCAMERA_H_
-#define LIBUVCCAMERA_H_
+#pragma once
 
-//#include <jni.h>
 #include <libusb.h>
 #include <libuvc/libuvc.h>
-//#include "utilbase.h"
 
-#endif /* LIBUVCCAMERA_H_ */
+#define JNI_ERR -1;
+
+struct _jfieldID;              /* opaque structure */
+typedef struct _jfieldID *jfieldID;   /* field IDs */
+
+struct _jmethodID;              /* opaque structure */
+typedef struct _jmethodID *jmethodID; /* method IDs */
+
+typedef bool jboolean;
+typedef unsigned char jbyte;
+typedef char jchar;
+typedef short jshort;
+typedef int jint;
+typedef long jlong;
+typedef float jfloat;
+typedef double jdouble;
+
+typedef union jvalue {
+    jboolean z;
+    jbyte    b;
+    jchar    c;
+    jshort   s;
+    jint     i;
+    jlong    j;
+    jfloat   f;
+    jdouble  d;
+    jobject  l;
+} jvalue;
+
+class _jobject {};
+class _jclass : public _jobject {};
+
+typedef _jobject *jobject;
+typedef _jclass *jclass;

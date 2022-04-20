@@ -21,7 +21,7 @@ protected:
 public:
 	CallbackPipeline(const size_t &_data_bytes = DEFAULT_FRAME_SZ);
 	virtual ~CallbackPipeline();
-	int setFrameCallback(JNIEnv *env, jobject frame_callback_obj, int pixel_format);
+	int setFrameCallback(jobject frame_callback_obj, int pixel_format);
 };
 
 #endif //PUPILMOBILE_CALLBACKPIPELINE_H

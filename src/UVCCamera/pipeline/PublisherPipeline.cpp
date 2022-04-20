@@ -31,7 +31,6 @@
 #endif
 
 #include <stdlib.h>
-#include <linux/time.h>
 #include <unistd.h>
 
 #include "utilbase.h"
@@ -226,7 +225,7 @@ int PublisherPipeline::handle_frame(uvc_frame_t *frame) {
 //********************************************************************************
 //
 //********************************************************************************
-static ID_TYPE nativeCreate(JNIEnv *env, jobject thiz,
+static ID_TYPE nativeCreate(
 	jstring publisher_addr_str, jstring subscription_id_str) {
 
 	ENTER();
@@ -236,16 +235,16 @@ static ID_TYPE nativeCreate(JNIEnv *env, jobject thiz,
 	PublisherPipeline *pipeline = new PublisherPipeline(DEFAULT_FRAME_SZ, c_addr, c_sub_id);
 	env->ReleaseStringUTFChars(publisher_addr_str, c_addr);
 	env->ReleaseStringUTFChars(subscription_id_str, c_sub_id);
-	setField_long(env, thiz, "mNativePtr", reinterpret_cast<ID_TYPE>(pipeline));
+	setField_long("mNativePtr", reinterpret_cast<ID_TYPE>(pipeline));
 
 	RETURN(reinterpret_cast<ID_TYPE>(pipeline), ID_TYPE);
 }
 
-static void nativeDestroy(JNIEnv *env, jobject thiz,
+static void nativeDestroy(
 	ID_TYPE id_pipeline) {
 
 	ENTER();
-	setField_long(env, thiz, "mNativePtr", 0);
+	setField_long("mNativePtr", 0);
 	PublisherPipeline *pipeline = reinterpret_cast<PublisherPipeline *>(id_pipeline);
 	if (LIKELY(pipeline)) {
 		pipeline->release();
@@ -254,33 +253,33 @@ static void nativeDestroy(JNIEnv *env, jobject thiz,
 	EXIT();
 }
 
-static jint nativeGetState(JNIEnv *env, jobject thiz,
+static int nativeGetState(
 	ID_TYPE id_pipeline) {
 
 	ENTER();
-	jint result = 0;
+	int result = 0;
 	PublisherPipeline *pipeline = reinterpret_cast<PublisherPipeline *>(id_pipeline);
 	if (LIKELY(pipeline)) {
 		result = pipeline->getState();
 	}
-	RETURN(result, jint);
+	RETURN(result, int);
 }
 
-static jint nativeSetPipeline(JNIEnv *env, jobject thiz,
+static int nativeSetPipeline(
 	ID_TYPE id_pipeline, jobject pipeline_obj) {
 
 	ENTER();
-	jint result = JNI_ERR;
+	int result = JNI_ERR;
 	PublisherPipeline *pipeline = reinterpret_cast<PublisherPipeline *>(id_pipeline);
 	if (pipeline) {
-		IPipeline *target_pipeline = getPipeline(env, pipeline_obj);
+		IPipeline *target_pipeline = getPipeline(pipeline_obj);
 		result = pipeline->setPipeline(target_pipeline);
 	}
 
-	RETURN(result, jint);
+	RETURN(result, int);
 }
 
-static jint nativeStart(JNIEnv *env, jobject thiz,
+static int nativeStart(
 	ID_TYPE id_pipeline) {
 
 	ENTER();
@@ -291,21 +290,21 @@ static jint nativeStart(JNIEnv *env, jobject thiz,
 		result = pipeline->start();
 	}
 
-	RETURN(result, jint);
+	RETURN(result, int);
 }
 
-static jint nativeStop(JNIEnv *env, jobject thiz,
+static int nativeStop(
 	ID_TYPE id_pipeline) {
 
 	ENTER();
 
-	jint result = JNI_ERR;
+	int result = JNI_ERR;
 	PublisherPipeline *pipeline = reinterpret_cast<PublisherPipeline *>(id_pipeline);
 	if (LIKELY(pipeline)) {
 		result = pipeline->stop();
 	}
 
-	RETURN(result, jint);
+	RETURN(result, int);
 }
 
 //================================================================================

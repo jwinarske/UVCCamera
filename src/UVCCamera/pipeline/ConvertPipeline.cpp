@@ -120,19 +120,19 @@ int ConvertPipeline::handle_frame(uvc_frame_t *frame) {
 //**********************************************************************
 //
 //**********************************************************************
-static ID_TYPE nativeCreate(JNIEnv *env, jobject thiz, jint pixel_format) {
+static ID_TYPE nativeCreate( int pixel_format) {
 
 	ENTER();
 	ConvertPipeline *pipeline = new ConvertPipeline(DEFAULT_FRAME_SZ, pixel_format);
-	setField_long(env, thiz, "mNativePtr", reinterpret_cast<ID_TYPE>(pipeline));
+	setField_long("mNativePtr", reinterpret_cast<ID_TYPE>(pipeline));
 	RETURN(reinterpret_cast<ID_TYPE>(pipeline), ID_TYPE);
 }
 
-static void nativeDestroy(JNIEnv *env, jobject thiz,
+static void nativeDestroy(
 	ID_TYPE id_pipeline) {
 
 	ENTER();
-	setField_long(env, thiz, "mNativePtr", 0);
+	setField_long("mNativePtr", 0);
 	ConvertPipeline *pipeline = reinterpret_cast<ConvertPipeline *>(id_pipeline);
 	if (LIKELY(pipeline)) {
 		pipeline->release();
@@ -141,33 +141,33 @@ static void nativeDestroy(JNIEnv *env, jobject thiz,
 	EXIT();
 }
 
-static jint nativeGetState(JNIEnv *env, jobject thiz,
+static int nativeGetState(
 	ID_TYPE id_pipeline) {
 
 	ENTER();
-	jint result = 0;
+	int result = 0;
 	ConvertPipeline *pipeline = reinterpret_cast<ConvertPipeline *>(id_pipeline);
 	if (pipeline) {
 		result = pipeline->getState();
 	}
-	RETURN(result, jint);
+	RETURN(result, int);
 }
 
-static jint nativeSetPipeline(JNIEnv *env, jobject thiz,
+static int nativeSetPipeline(
 	ID_TYPE id_pipeline, jobject pipeline_obj) {
 
 	ENTER();
-	jint result = JNI_ERR;
+	int result = JNI_ERR;
 	ConvertPipeline *pipeline = reinterpret_cast<ConvertPipeline *>(id_pipeline);
 	if (pipeline) {
-		IPipeline *target_pipeline = getPipeline(env, pipeline_obj);
+		IPipeline *target_pipeline = getPipeline(pipeline_obj);
 		result = pipeline->setPipeline(target_pipeline);
 	}
 
-	RETURN(result, jint);
+	RETURN(result, int);
 }
 
-static jint nativeStart(JNIEnv *env, jobject thiz,
+static int nativeStart(
 	ID_TYPE id_pipeline) {
 
 	ENTER();
@@ -177,19 +177,19 @@ static jint nativeStart(JNIEnv *env, jobject thiz,
 	if (LIKELY(pipeline)) {
 		result = pipeline->start();
 	}
-	RETURN(result, jint);
+	RETURN(result, int);
 }
 
-static jint nativeStop(JNIEnv *env, jobject thiz,
+static int nativeStop(
 	ID_TYPE id_pipeline) {
 
-	jint result = JNI_ERR;
+	int result = JNI_ERR;
 	ENTER();
 	ConvertPipeline *pipeline = reinterpret_cast<ConvertPipeline *>(id_pipeline);
 	if (LIKELY(pipeline)) {
 		result = pipeline->stop();
 	}
-	RETURN(result, jint);
+	RETURN(result, int);
 }
 
 //**********************************************************************

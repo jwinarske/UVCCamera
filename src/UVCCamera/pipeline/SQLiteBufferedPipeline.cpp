@@ -362,8 +362,8 @@ void SQLiteBufferedPipeline::do_loop() {
 //********************************************************************************
 //
 //********************************************************************************
-static ID_TYPE nativeCreate(JNIEnv *env, jobject thiz,
-	jstring database_path_str, jboolean clear_table) {
+static ID_TYPE nativeCreate(
+	jstring database_path_str, bool clear_table) {
 
 	ENTER();
 
@@ -376,15 +376,15 @@ static ID_TYPE nativeCreate(JNIEnv *env, jobject thiz,
 	}
 	env->ReleaseStringUTFChars(database_path_str, c_database_path);
 
-	setField_long(env, thiz, "mNativePtr", reinterpret_cast<ID_TYPE>(pipeline));
+	setField_long("mNativePtr", reinterpret_cast<ID_TYPE>(pipeline));
 	RETURN(reinterpret_cast<ID_TYPE>(pipeline), ID_TYPE);
 }
 
-static void nativeDestroy(JNIEnv *env, jobject thiz,
+static void nativeDestroy(
 	ID_TYPE id_pipeline) {
 
 	ENTER();
-	setField_long(env, thiz, "mNativePtr", 0);
+	setField_long("mNativePtr", 0);
 	SQLiteBufferedPipeline *pipeline = reinterpret_cast<SQLiteBufferedPipeline *>(id_pipeline);
 	if (LIKELY(pipeline)) {
 		pipeline->release();
@@ -393,33 +393,33 @@ static void nativeDestroy(JNIEnv *env, jobject thiz,
 	EXIT();
 }
 
-static jint nativeGetState(JNIEnv *env, jobject thiz,
+static int nativeGetState(
 	ID_TYPE id_pipeline) {
 
 	ENTER();
-	jint result = 0;
+	int result = 0;
 	SQLiteBufferedPipeline *pipeline = reinterpret_cast<SQLiteBufferedPipeline *>(id_pipeline);
 	if (pipeline) {
 		result = pipeline->getState();
 	}
-	RETURN(result, jint);
+	RETURN(result, int);
 }
 
-static jint nativeSetPipeline(JNIEnv *env, jobject thiz,
+static int nativeSetPipeline(
 	ID_TYPE id_pipeline, jobject pipeline_obj) {
 
 	ENTER();
-	jint result = JNI_ERR;
+	int result = JNI_ERR;
 	SQLiteBufferedPipeline *pipeline = reinterpret_cast<SQLiteBufferedPipeline *>(id_pipeline);
 	if (pipeline) {
-		IPipeline *target_pipeline = getPipeline(env, pipeline_obj);
+		IPipeline *target_pipeline = getPipeline(pipeline_obj);
 		result = pipeline->setPipeline(target_pipeline);
 	}
 
-	RETURN(result, jint);
+	RETURN(result, int);
 }
 
-static jint nativeStart(JNIEnv *env, jobject thiz,
+static int nativeStart(
 	ID_TYPE id_pipeline) {
 
 	ENTER();
@@ -429,19 +429,19 @@ static jint nativeStart(JNIEnv *env, jobject thiz,
 	if (LIKELY(pipeline)) {
 		result = pipeline->start();
 	}
-	RETURN(result, jint);
+	RETURN(result, int);
 }
 
-static jint nativeStop(JNIEnv *env, jobject thiz,
+static int nativeStop(
 	ID_TYPE id_pipeline) {
 
-	jint result = JNI_ERR;
+	int result = JNI_ERR;
 	ENTER();
 	SQLiteBufferedPipeline *pipeline = reinterpret_cast<SQLiteBufferedPipeline *>(id_pipeline);
 	if (LIKELY(pipeline)) {
 		result = pipeline->stop();
 	}
-	RETURN(result, jint);
+	RETURN(result, int);
 }
 
 //**********************************************************************

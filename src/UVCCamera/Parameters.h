@@ -21,8 +21,8 @@
  * All files in the folder are under this Apache License, Version 2.0.
  * Files in the jni/libjpeg, jni/libusb, jin/libuvc, jni/rapidjson folder may have a different license, see the respective files.
 */
-#ifndef PARAMETERS_H_
-#define PARAMETERS_H_
+
+#pragma once
 
 #pragma interface
 
@@ -37,5 +37,3 @@ public:
 	char *getCurrentStream(const uvc_stream_ctrl_t *ctrl);
 	char *getSupportedSize(const uvc_device_handle_t *deviceHandle);
 };
-
-#endif /* PARAMETERS_H_ */

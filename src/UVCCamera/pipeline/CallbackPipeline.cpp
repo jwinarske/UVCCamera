@@ -42,7 +42,7 @@ CallbackPipeline::~CallbackPipeline() {
 	EXIT();
 }
 
-int CallbackPipeline::setFrameCallback(JNIEnv *env, jobject frame_callback_obj, int pixel_format) {
+int CallbackPipeline::setFrameCallback(jobject frame_callback_obj, int pixel_format) {
 
 	ENTER();
 	Mutex::Autolock lock(capture_mutex);
@@ -169,19 +169,19 @@ SKIP:
 //**********************************************************************
 //
 //**********************************************************************
-static ID_TYPE nativeCreate(JNIEnv *env, jobject thiz) {
+static ID_TYPE nativeCreate(jobject thiz) {
 
 	ENTER();
 	CallbackPipeline *pipeline = new CallbackPipeline();
-	setField_long(env, thiz, "mNativePtr", reinterpret_cast<ID_TYPE>(pipeline));
+	setField_long("mNativePtr", reinterpret_cast<ID_TYPE>(pipeline));
 	RETURN(reinterpret_cast<ID_TYPE>(pipeline), ID_TYPE);
 }
 
-static void nativeDestroy(JNIEnv *env, jobject thiz,
+static void nativeDestroy(
 	ID_TYPE id_pipeline) {
 
 	ENTER();
-	setField_long(env, thiz, "mNativePtr", 0);
+	setField_long("mNativePtr", 0);
 	CallbackPipeline *pipeline = reinterpret_cast<CallbackPipeline *>(id_pipeline);
 	if (LIKELY(pipeline)) {
 		pipeline->release();
@@ -190,33 +190,33 @@ static void nativeDestroy(JNIEnv *env, jobject thiz,
 	EXIT();
 }
 
-static jint nativeGetState(JNIEnv *env, jobject thiz,
+static int nativeGetState(
 	ID_TYPE id_pipeline) {
 
 	ENTER();
-	jint result = 0;
+	int result = 0;
 	CallbackPipeline *pipeline = reinterpret_cast<CallbackPipeline *>(id_pipeline);
 	if (pipeline) {
 		result = pipeline->getState();
 	}
-	RETURN(result, jint);
+	RETURN(result, int);
 }
 
-static jint nativeSetPipeline(JNIEnv *env, jobject thiz,
+static int nativeSetPipeline(
 	ID_TYPE id_pipeline, jobject pipeline_obj) {
 
 	ENTER();
-	jint result = JNI_ERR;
+	int result = JNI_ERR;
 	CallbackPipeline *pipeline = reinterpret_cast<CallbackPipeline *>(id_pipeline);
 	if (pipeline) {
-		IPipeline *pipeline = getPipeline(env, pipeline_obj);
+		IPipeline *pipeline = getPipeline(pipeline_obj);
 		result = pipeline->setPipeline(pipeline);
 	}
 
-	RETURN(result, jint);
+	RETURN(result, int);
 }
 
-static jint nativeStart(JNIEnv *env, jobject thiz,
+static int nativeStart(
 	ID_TYPE id_pipeline) {
 
 	ENTER();
@@ -226,32 +226,32 @@ static jint nativeStart(JNIEnv *env, jobject thiz,
 	if (LIKELY(pipeline)) {
 		result = pipeline->start();
 	}
-	RETURN(result, jint);
+	RETURN(result, int);
 }
 
-static jint nativeStop(JNIEnv *env, jobject thiz,
+static int nativeStop(
 	ID_TYPE id_pipeline) {
 
-	jint result = JNI_ERR;
+	int result = JNI_ERR;
 	ENTER();
 	CallbackPipeline *pipeline = reinterpret_cast<CallbackPipeline *>(id_pipeline);
 	if (LIKELY(pipeline)) {
 		result = pipeline->stop();
 	}
-	RETURN(result, jint);
+	RETURN(result, int);
 }
 
-static jint nativeSetFrameCallback(JNIEnv *env, jobject thiz,
-	ID_TYPE id_pipeline, jobject jIFrameCallback, jint pixel_format) {
+static int nativeSetFrameCallback(
+	ID_TYPE id_pipeline, jobject jIFrameCallback, int pixel_format) {
 
-	jint result = JNI_ERR;
+	int result = JNI_ERR;
 	ENTER();
 	CallbackPipeline *pipeline = reinterpret_cast<CallbackPipeline *>(id_pipeline);
 	if (LIKELY(pipeline)) {
 		jobject frame_callback_obj = env->NewGlobalRef(jIFrameCallback);
-		result = pipeline->setFrameCallback(env, frame_callback_obj, pixel_format);
+		result = pipeline->setFrameCallback(frame_callback_obj, pixel_format);
 	}
-	RETURN(result, jint);
+	RETURN(result, int);
 }
 
 //**********************************************************************

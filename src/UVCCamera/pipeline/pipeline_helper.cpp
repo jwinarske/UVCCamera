@@ -14,12 +14,12 @@
 #include "DistributePipeline.h"
 #include "pipeline_helper.h"
 
-IPipeline *getPipeline(JNIEnv *env, jobject pipeline_obj) {
+IPipeline *getPipeline(jobject pipeline_obj) {
 	ENTER();
 
 	if (!pipeline_obj) return NULL;
-	ID_TYPE id_pipeline = getField_long(env, pipeline_obj, "mNativePtr");
-	jint type = getField_int(env, pipeline_obj, "mType");
+	ID_TYPE id_pipeline = getField_long(pipeline_obj, "mNativePtr");
+	int type = getField_int(pipeline_obj, "mType");
 	env->ExceptionClear();
 	IPipeline *result = NULL;
 	switch (type) {

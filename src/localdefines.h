@@ -22,16 +22,15 @@
  * Files in the jni/libjpeg, jni/libusb, jin/libuvc, jni/rapidjson folder may have a different license, see the respective files.
 */
 
-#ifndef LOCALDEFINES_H_
-#define LOCALDEFINES_H_
-
-#include <jni.h>
+#pragma once
 
 #ifndef LOG_TAG
 #define LOG_TAG "libUVCCamera"
 #endif
 
+#ifndef LIBUVC_HAS_JPEG
 #define LIBUVC_HAS_JPEG
+#endif
 
 // write back array that got by getXXXArrayElements into original Java object and release its array
 #define	ARRAYELEMENTS_COPYBACK_AND_RELEASE 0
@@ -65,11 +64,5 @@
 #undef USE_LOGALL
 #endif
 
-// Absolute class name of Java object
-// if you change the package name of UVCCamera library, you must fix these
-#define		JTYPE_SYSTEM				"Ljava/lang/System;"
-#define		JTYPE_UVCCAMERA				"Lcom/serenegiant/usb/UVCCamera;"
 //
-typedef		jlong						ID_TYPE;
-
-#endif /* LOCALDEFINES_H_ */
+typedef		long						ID_TYPE;
